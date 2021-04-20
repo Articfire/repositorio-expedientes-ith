@@ -1,0 +1,23 @@
+<!-- Etiqueta para encontrar los recursos estaticos, como archivos
+ css, js, etc. -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Ejemplo del titulo con el motor de templates -->
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body>
+    <!-- El heder podria ir aqui, mientras este afuera de las
+      etiquetas de content -->
+
+      <!-- Etiquetas para recibir el codigo del archivo que hereda de esta base. -->
+      <!-- Ej: si se renderiza el ejemplo de vista, adentro de las etiquetas se
+        insertaria el <h1>Hola, estoy adentro del body de base.html</h1> -->
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>
