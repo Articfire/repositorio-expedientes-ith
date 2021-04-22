@@ -1,0 +1,69 @@
+li{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+h1, h2{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin: 10px;
+}
+
+nav{
+    border: 1px solid black;
+    display: block;
+}
+
+div{
+    border: 1px solid black;
+}
+
+.fondodatos{
+    background: #BAB8B8;
+    width: 960px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: black;
+    margin: 20px;
+    padding: 20px;
+}
+
+.menu{
+    background: gray;
+    color: white;
+    padding: 5px 15px;
+}
+
+nav ul li a{
+    margin-left: 50px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a::before{
+    display: block;
+    content: '';
+    width: 0%;
+    background: #444;
+    height: 5px;
+    top: 0;
+    position: absolute;
+}
+
+nav ul li a:hover::before{
+    width: 100%;
+}
+
+.menu li{
+    list-style: none;
+    padding: 5px;
+    display: inline-block;
+}
+
+img{
+    width: 89px;
+    margin-top: -90px;
+    display: inline;
+    float: left;
+}
+
