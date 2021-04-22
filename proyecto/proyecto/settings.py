@@ -80,7 +80,7 @@ DATABASES = {
     # mysql_development_database
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'repositorio_dev',
+        'NAME': 'demostracion',
         'USER': 'root',
         'PASSWORD': 'mysqlroot',
         'HOST': '127.0.0.1',
@@ -126,6 +126,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    '/var/www/static/',
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

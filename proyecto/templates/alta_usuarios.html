@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}Alta de Usuarios{% endblock %}
+
+{% block content %}
+<div class="fondodatos">
+    Usuario
+    <input type="text" name="txt_nombre">
+
+    Clave
+    <input type="number" name ="txt_clave">
+
+    Contraseña
+    <input type="password" name="txt_password">
+
+    <button name="btn_registro" type="button">Registrar</button>
+</div>
+{% endblock %}

@@ -7,15 +7,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Ejemplo del titulo con el motor de templates -->
     <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <!-- Ejemplo del titulo con el motor de templates -->
 </head>
 <body>
     <!-- El heder podria ir aqui, mientras este afuera de las
       etiquetas de content -->
+      <header>
+          <h1>Tecnologico Nacional de Mexico</h1>
+          <h2>Instituto Tecnologico de Hermosillo</h2>
+          <img src="{% static 'images/ith_logo.png' %}" alt="Logo Ith">
+          <!-- /home/martin/repositorio-expedientes-ith/proyecto/static/images/ith_logo.png -->
+      </header>
+
+      <nav class="menu">
+          <ul>
+              <li><a href="#">Inicio</a></li>
+              <li><a href="#">Consulta</a></li>
+              <li><a href="#">Subida</a></li>
+              <li><a href="#">Registro</a></li>
+          </ul>
+      </nav>
 
     <!-- Etiquetas para recibir el codigo del archivo que hereda de esta base. -->
     {% block content %}
     {% endblock content %}
+
+    {% block script %}
+    {% endblock script %}
 </body>
 </html>

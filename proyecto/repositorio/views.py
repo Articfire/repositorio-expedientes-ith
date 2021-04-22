@@ -14,7 +14,7 @@ def ControladorInicio(request):
     # request es un objeto peticion con la informacion del navegador, etc.
     # template_name es un string con la ruta del template.
     '''
-    return HttpResponse("Inicio")
+    return render(request, 'inicio.html')
 
 def ControladorImportarAlumnos(request):
     '''docstring para ControladorImportarAlumnos.'''
@@ -38,3 +38,6 @@ def ControladorImportarAlumnos(request):
         else:
             data['error'] = 'No subio ningun archivo, porfavor elija uno y subalo.'
     return render(request, 'importar.html', data)
+
+def ControladorAltaAlumnos(request):
+    return render(request, 'alta_usuarios.html')
