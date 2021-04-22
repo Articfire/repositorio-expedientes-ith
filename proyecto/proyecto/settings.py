@@ -80,7 +80,7 @@ DATABASES = {
     # mysql_development_database
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'demostracion',
+        'NAME': 'repositorio_dev',
         'USER': 'root',
         'PASSWORD': 'mysqlroot',
         'HOST': '127.0.0.1',
