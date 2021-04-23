@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}Alta de Usuarios{% endblock %}
+
+{% block content %}
+
+<form class="" action="" method="post">
+  {% csrf_token %}
+  <div class="fondodatos contenedor">
+      <div class="grupo-input col-2">
+        <label class="" for="txt_nombre">Nombre</label>
+        <input class="" type="text" id="txt_nombre" name="txt_nombre">
+      </div>
+
+      <div class="grupo-input col-2">
+        <label class="" for="txt_clave">Clave</label>
+        <input class="" type="number" id="txt_clave" name ="txt_noControl">
+      </div>
+
+      <div class="grupo-input col-2">
+        <label class="" for="txt_password">Carrera</label>
+        <input class="" type="text" id="txt_password" name="txt_carrera">
+      </div>
+
+      <div class="grupo-input col-2">
+        <input class="boton" name="btn_registro" type="submit" value="Registro">
+      </div>
+  </div>
+</form>
+{% endblock %}

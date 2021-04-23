@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Importar Alumnos{% endblock %}
+
+{% block content %}
+<!-- Hey, tu, quien vaya a diseñar esta pantalla, respeta este form, es
+ para subir archivos excel al backend. Diseña el html adentro de las
+ etiquetas block, que sirven para el motor de templates de django. -->
+
+  <center>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <h3>Seleccione archivo Excel</h3>
+          <input class="form-control" name="archivo" type="file" id="formFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" value="Seleccionar Archivo">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Subir">
+      </form>
+    </center>
+
+  {% if error %}
+    <p>{{ error }}</p>
+  {% endif %}
+{% endblock %}
