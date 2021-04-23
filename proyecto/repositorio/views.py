@@ -43,9 +43,16 @@ def ControladorAltaAlumnos(request):
     data = {}
     if request.method == "POST":
         # Aqui entra cuando btn_registro
-        data.update({
-            'nombre' = request.POST.get('txt_nombre'),
-            'numero_control' = request.POST.get('txt_noControl'),
-            'carrera' = request.POST.get('txt_carrera'),
-        })
+        data={
+            'nombre_completo' : request.POST.get('txt_nombre'),
+            'numero_control' : request.POST.get('txt_noControl'),
+            'carrera' : request.POST.get('txt_carrera'),
+        }
+        print(data)
+        try:
+            insertarAlumno = Alumno(**data)
+            insertarAlumno.save()
+        except Exception as e:
+            print(e)
+            return render(request, '404.html')
     return render(request, 'alta_usuarios.html')
