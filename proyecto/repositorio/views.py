@@ -40,4 +40,12 @@ def ControladorImportarAlumnos(request):
     return render(request, 'importar.html', data)
 
 def ControladorAltaAlumnos(request):
+    data = {}
+    if request.method == "POST":
+        # Aqui entra cuando btn_registro
+        data.update({
+            'nombre' = request.POST.get('txt_nombre'),
+            'numero_control' = request.POST.get('txt_noControl'),
+            'carrera' = request.POST.get('txt_carrera'),
+        })
     return render(request, 'alta_usuarios.html')
