@@ -22,23 +22,19 @@ def ControladorImportarAlumnos(request):
     if request.method == 'POST':
         if request.FILES.get('archivo'):
             mi_archivo = request.FILES.get('archivo')
+            fs = FileSystemStorage()
+            nombre_archivo = fs.save(mi_archivo.name, mi_archivo)
 
-            if '.xlsx' in mi_archivo.name or '.xls' in mi_archivo:
-                fs = FileSystemStorage()
-                nombre_archivo = fs.save(mi_archivo.name, mi_archivo)
+            info_excel = pd.read_excel(r'media/{}'.format(mi_archivo.name))
+            diccionario_alumnos = info_excel.to_dict('index')
 
-                info_excel = pd.read_excel(r'media/{}'.format(mi_archivo.name))
-                diccionario_alumnos = info_excel.to_dict('index')
-
-                for fila in diccionario_alumnos.values():
-                    alumno_nuevo = Alumno(
-                        nombre_completo = fila.get('apellido_paterno') + ' ' + fila.get('apellido_materno') + ' ' + fila.get('nombre_asiprante'),
-                        numero_control = fila.get('no_control'),
-                        carrera = fila.get('carrera')
-                    )
-                    alumno_nuevo.save()
-            else:
-                data['error'] = 'El archivo subido no es de excel, suba uno de excel (con la terminacion .xlsx).'
+            for fila in diccionario_alumnos.values():
+                alumno_nuevo = Alumno(
+                    nombre_completo = str(fila.get('apellido_paterno')) + ' ' + str(fila.get('apellido_materno')) + ' ' + str(fila.get('nombre_aspirante')),
+                    numero_control = fila.get('no_control'),
+                    carrera = fila.get('carrera')
+                )
+                alumno_nuevo.save()
         else:
             data['error'] = 'No subio ningun archivo, porfavor elija uno y subalo.'
     return render(request, 'importar.html', data)
