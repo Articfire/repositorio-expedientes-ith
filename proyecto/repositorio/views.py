@@ -48,11 +48,19 @@ def ControladorAltaAlumnos(request):
             'numero_control' : request.POST.get('txt_noControl'),
             'carrera' : request.POST.get('txt_carrera'),
         }
-        print(data)
         try:
             insertarAlumno = Alumno(**data)
             insertarAlumno.save()
         except Exception as e:
-            print(e)
             return render(request, '404.html')
     return render(request, 'alta_usuarios.html')
+
+def ControladorSubirArchivos(request):
+	'''El bloque try/except sirve para enviar texto placeholder en caso de
+	no encontrar la vista.'''
+	data = {}
+	try:
+		response = render(request, 'nombre_de_la_pantalla.html')
+	except Exception as e:
+		response = HttpResponse('El panadero con el pan XD (No hay html para esta parte aun).')
+	return response
