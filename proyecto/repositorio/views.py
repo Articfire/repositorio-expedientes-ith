@@ -58,7 +58,9 @@ def ControladorAltaAlumnos(request):
 def ControladorSubirArchivos(request):
 	'''El bloque try/except sirve para enviar texto placeholder en caso de
 	no encontrar la vista.'''
-	data = {}
+	data = {'error' : None}
+    if request.method == 'POST':
+        pass
 	try:
 		response = render(request, 'nombre_de_la_pantalla.html')
 	except Exception as e:
