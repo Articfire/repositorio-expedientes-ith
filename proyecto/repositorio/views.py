@@ -5,7 +5,7 @@ from django.core.files.storage import FileSystemStorage
 
 import pandas as pd
 
-from .models import Alumno
+from .models import Alumno, Archivo
 
 # Create your views here.
 def ControladorInicio(request):
@@ -55,14 +55,31 @@ def ControladorAltaAlumnos(request):
             return render(request, '404.html')
     return render(request, 'alta_usuarios.html')
 
-def ControladorSubirArchivos(request):
-	'''El bloque try/except sirve para enviar texto placeholder en caso de
-	no encontrar la vista.'''
-	data = {'error' : None}
+def ControladorConsultaExpedientes(request):
+    pass
+
+def ControladorExpediente(request, id):
+    data = {'error' : None}
+    alumno = Alumno.objects.get(id=id)
+    data.update({'numero_control': alumno.numero_control})
+
     if request.method == 'POST':
-        pass
-	try:
-		response = render(request, 'nombre_de_la_pantalla.html')
-	except Exception as e:
-		response = HttpResponse('El panadero con el pan XD (No hay html para esta parte aun).')
-	return response
+        if request.FILES.get('archivo'):
+            try:
+                # Obtener valores necesarios del POST y de la base de datos
+                prefijo = request.POST.get('prefijo')
+
+                # Proceso de renombrar archivo subido
+                mi_archivo = request.FILES.get('archivo')
+                ruta = mi_archivo.name.split('/')
+                nombre_y_extension = ruta[-1].split('.')
+                nombre_archivo = prefijo + '_' + str(alumno.numero_control) + '.' + nombre_y_extension[-1]
+                ruta[-1] = nombre_archivo
+                mi_archivo.name = '/'.join(ruta)
+
+                # Guardar archivo
+                fs = FileSystemStorage()
+                archivo_guardado = fs.save(mi_archivo.name, mi_archivo)
+            except Exception as e:
+                print(e)
+    return render(request, 'expediente.html', data)
