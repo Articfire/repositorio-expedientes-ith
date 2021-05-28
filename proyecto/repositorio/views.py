@@ -56,7 +56,8 @@ def ControladorAltaAlumnos(request):
     return render(request, 'alta_usuarios.html')
 
 def ControladorConsultaExpedientes(request):
-    pass
+    data = {}
+    return render(request, 'consulta.html')
 
 def ControladorExpediente(request, id):
     data = {'error' : None}
@@ -96,5 +97,5 @@ def ControladorAjaxConsulta(request, busqueda, filtro):
         else:
             return HttpResponse('No hay un filtro '+str(filtro))
         data = list(alumnos)
-        
+
     return HttpResponse('El metodo de peticion debe ser POST.')

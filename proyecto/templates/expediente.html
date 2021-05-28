@@ -10,7 +10,7 @@ Expediente de {{ numero_control }}
 {% if error %}
   {{ error }}
   <a class="btn btn-primary" href="/">Volver al inicio</a>
-{% elseif %}
+{% else %}
   <form enctype="multipart/form-data" method="post">
     {% csrf_token %}
     <div class="fondodatos contenedor col-8">
