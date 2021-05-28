@@ -84,6 +84,13 @@ def ControladorExpediente(request, id):
             # Guardar archivo
             fs = FileSystemStorage()
             archivo_guardado = fs.save(mi_archivo.name, mi_archivo)
+
+            archivo_anexado = Archivo(
+                nombre = prefijo + '_' + str(data.get('numero_control')),
+                ruta = 'media/',
+                extension = nombre_y_extension[-1],
+                pertenece_a = id
+            )
         else:
             data.update({'error' : 'No subio ningun archivo, porfavor elija uno y subalo.'})
     return render(request, 'expediente.html', data)
