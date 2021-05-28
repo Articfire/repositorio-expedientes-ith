@@ -109,3 +109,7 @@ img{
   display: inline-block;
   margin: 10px;
 }
+
+.gbox_documents{
+  width: 60px;
+}

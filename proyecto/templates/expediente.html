@@ -7,6 +7,7 @@ Expediente de {{ numero_control }}
 {% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
 {% if error %}
   <p>{{ error }}</p>
   <a class="btn btn-secondary" href="/">Volver</a>
@@ -15,13 +16,27 @@ Expediente de {{ numero_control }}
     {% csrf_token %}
     <input class="form-control" type="file" name="archivo" value="Seleccionar archivo">
     <select class="form-control" name="prefijo">
+=======
+<form enctype="multipart/form-data" method="post">
+  {% csrf_token %}
+  <div class="fondodatos contenedor col-8">
+    <input class="form-control" style="width: 60%; margin-top: 4%; margin-left: 20%;" type="file" name="archivo" value="Seleccionar archivo">
+    <select class="form-control" style="width: 20%; margin-top: 5%; margin-left: 40%;" name="prefijo">
+>>>>>>> 9330d76f8b4c7a8baf9367421c847f6ec9330901
       <option value="Ingles">Ingles</option>
       <option value="Servicio social">Servicio social</option>
       <option value="Residencias">Residencias</option>
       <option value="Kardex">Kardex</option>
       <option value="Acta de nacimiento">Acta de nacimiento</option>
     </select>
+<<<<<<< HEAD
     <input type="submit" name="subir_archivo" value="Subir archivo" class="btn btn-success">
   </form>
 {% endif %}
+=======
+    <input type="submit" name="subir_archivo" value="Subir archivo" class="btn btn-success" style="margin-top: 5%; margin-left: 43%; margin-bottom: 4%;">
+  </div>
+  
+</form>
+>>>>>>> 9330d76f8b4c7a8baf9367421c847f6ec9330901
 {% endblock %}
