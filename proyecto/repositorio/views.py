@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 import pandas as pd
+import json
 
 from .models import Alumno, Archivo
 
@@ -96,13 +97,18 @@ def ControladorExpediente(request, id):
     return render(request, 'expediente.html', data)
 
 def ControladorAjaxConsulta(request, busqueda, filtro):
-    if request.method == 'POST':
-        if filtro == 'nombre':
-            alumnos = Alumno.objects.filter(nombre_completo = busqueda)
-        elif filtro == 'numero_control':
-            alumnos = Alumno.objects.filter(numero_control = busqueda)
-        else:
-            return HttpResponse('No hay un filtro '+str(filtro))
-        data = list(alumnos)
+    if filtro == 'nombre':
+        alumnos = Alumno.objects.filter(nombre_completo__contains = busqueda)
+    elif filtro == 'numero_control':
+        alumnos = Alumno.objects.filter(numero_control__contains = busqueda)
+    else:
+        return HttpResponse('No hay ningun filtro llamado '+str(filtro))
 
-    return HttpResponse('El metodo de peticion debe ser POST.')
+    data = [{
+        'id': alumno.id,
+        'nombre_completo': alumno.nombre_completo,
+        'numero_control': alumno.numero_control,
+        'carrera': alumno.carrera,
+    } for alumno in alumnos]
+
+    return HttpResponse(json.dumps(data, sort_keys=False, indent=4), content_type="application/json")

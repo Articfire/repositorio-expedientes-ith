@@ -7,5 +7,5 @@ urlpatterns = [
     path('alta', views.ControladorAltaAlumnos, name='alta_alumnos'),
     path('consulta', views.ControladorConsultaExpedientes, 'consulta'),
     path('expediente/<int:id>', views.ControladorExpediente, name='expediente'),
-    path('api/consulta', views.ControladorAjaxConsulta, name='api_consulta'),
+    path('api/alumnos/<busqueda>/<filtro>', views.ControladorAjaxConsulta, name='api_consulta'),
 ]
