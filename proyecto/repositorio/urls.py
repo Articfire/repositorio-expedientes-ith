@@ -6,4 +6,5 @@ urlpatterns = [
     path('importar', views.ControladorImportarAlumnos, name='importar_alumnos'),
     path('alta', views.ControladorAltaAlumnos, name='alta_alumnos'),
     path('expediente/<int:id>', views.ControladorExpediente, name='expediente'),
+    path('api/consulta', views.ControladorAjaxConsulta, name='api_consulta')
 ]

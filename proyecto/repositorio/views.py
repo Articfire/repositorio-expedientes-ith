@@ -7,7 +7,7 @@ import pandas as pd
 
 from .models import Alumno, Archivo
 
-# Create your views here.
+
 def ControladorInicio(request):
     '''
     # render() es la manera mas facil de enviar html por una respuesta.
@@ -60,26 +60,41 @@ def ControladorConsultaExpedientes(request):
 
 def ControladorExpediente(request, id):
     data = {'error' : None}
-    alumno = Alumno.objects.get(id=id)
-    data.update({'numero_control': alumno.numero_control})
+    try:
+        alumno = Alumno.objects.get(id=id)
+        data.update({'numero_control': alumno.numero_control})
+    except Exception as e:
+        data.update({'error' : 'No existe ese expediente en el repositorio.'})
+        print(e)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and not data.get('error'):
         if request.FILES.get('archivo'):
-            try:
-                # Obtener valores necesarios del POST y de la base de datos
-                prefijo = request.POST.get('prefijo')
+            # Obtener valores necesarios del POST y de la base de datos
+            prefijo = request.POST.get('prefijo')
 
-                # Proceso de renombrar archivo subido
-                mi_archivo = request.FILES.get('archivo')
-                ruta = mi_archivo.name.split('/')
-                nombre_y_extension = ruta[-1].split('.')
-                nombre_archivo = prefijo + '_' + str(alumno.numero_control) + '.' + nombre_y_extension[-1]
-                ruta[-1] = nombre_archivo
-                mi_archivo.name = '/'.join(ruta)
+            # Proceso de renombrar archivo subido
+            mi_archivo = request.FILES.get('archivo')
+            ruta = mi_archivo.name.split('/')
+            nombre_y_extension = ruta[-1].split('.')
+            nombre_archivo = prefijo + '_' + str(data.get('numero_control')) + '.' + nombre_y_extension[-1]
+            ruta[-1] = nombre_archivo
+            mi_archivo.name = '/'.join(ruta)
 
-                # Guardar archivo
-                fs = FileSystemStorage()
-                archivo_guardado = fs.save(mi_archivo.name, mi_archivo)
-            except Exception as e:
-                print(e)
+            # Guardar archivo
+            fs = FileSystemStorage()
+            archivo_guardado = fs.save(mi_archivo.name, mi_archivo)
+        else:
+            data.update({'error' : 'No subio ningun archivo, porfavor elija uno y subalo.'})
     return render(request, 'expediente.html', data)
+
+def ControladorAjaxConsulta(request, busqueda, filtro):
+    if request.method == 'POST':
+        if filtro == 'nombre':
+            alumnos = Alumno.objects.filter(nombre_completo = busqueda)
+        elif filtro == 'numero_control':
+            alumnos = Alumno.objects.filter(numero_control = busqueda)
+        else:
+            return HttpResponse('No hay un filtro '+str(filtro))
+        data = list(alumnos)
+        
+    return HttpResponse('El metodo de peticion debe ser POST.')

@@ -7,16 +7,21 @@ Expediente de {{ numero_control }}
 {% endblock %}
 
 {% block content %}
-<form enctype="multipart/form-data" method="post">
-  {% csrf_token %}
-  <input class="form-control" type="file" name="archivo" value="Seleccionar archivo">
-  <select class="form-control" name="prefijo">
-    <option value="Ingles">Ingles</option>
-    <option value="Servicio social">Servicio social</option>
-    <option value="Residencias">Residencias</option>
-    <option value="Kardex">Kardex</option>
-    <option value="Acta de nacimiento">Acta de nacimiento</option>
-  </select>
-  <input type="submit" name="subir_archivo" value="Subir archivo" class="btn btn-success">
-</form>
+{% if error %}
+  <p>{{ error }}</p>
+  <a class="btn btn-secondary" href="/">Volver</a>
+{% else %}
+  <form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <input class="form-control" type="file" name="archivo" value="Seleccionar archivo">
+    <select class="form-control" name="prefijo">
+      <option value="Ingles">Ingles</option>
+      <option value="Servicio social">Servicio social</option>
+      <option value="Residencias">Residencias</option>
+      <option value="Kardex">Kardex</option>
+      <option value="Acta de nacimiento">Acta de nacimiento</option>
+    </select>
+    <input type="submit" name="subir_archivo" value="Subir archivo" class="btn btn-success">
+  </form>
+{% endif %}
 {% endblock %}
