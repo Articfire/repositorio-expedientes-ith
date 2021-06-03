@@ -57,8 +57,15 @@ def ControladorAltaAlumnos(request):
     return render(request, 'alta_usuarios.html')
 
 def ControladorConsultaExpedientes(request):
-    data = {}
-    return render(request, 'consulta.html')
+    data = request.POST.get('num_control')
+    try:
+        datos = data
+        datos_tabla = Alumno.objects.get(id=datos)
+        data = (datos_tabla.nombre_completo, datos_tabla.numero_control, datos_tabla.carrera)
+    except:
+        data = data
+        print(data)
+    return render(request, 'consulta.html', {'data':data})
 
 def ControladorExpediente(request, id):
     data = {'error' : None}
@@ -90,8 +97,13 @@ def ControladorExpediente(request, id):
                 nombre = prefijo + '_' + str(data.get('numero_control')),
                 ruta = 'media/',
                 extension = nombre_y_extension[-1],
-                pertenece_a = id
+                pertenece_a = Alumno(id)
             )
+            try:
+                archivo_anexado.save()
+            except Exception as e:
+                return render(request, '404.html')
+
         else:
             data.update({'error' : 'No subio ningun archivo, porfavor elija uno y subalo.'})
     return render(request, 'expediente.html', data)
