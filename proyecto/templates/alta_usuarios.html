@@ -7,25 +7,27 @@
 
 <form class="" action="" method="post">
   {% csrf_token %}
-  <div class="fondodatos contenedor col-8">
-      <div class="grupo-input col-2">
-        <label class="" for="txt_nombre">Nombre</label>
-        <input class="" type="text" id="txt_nombre" name="txt_nombre">
-      </div>
-
-      <div class="grupo-input col-2">
-        <label class="" for="txt_clave">Clave</label>
-        <input class="" type="number" id="txt_clave" name ="txt_noControl">
-      </div>
-
-      <div class="grupo-input col-2">
-        <label class="" for="txt_password">Carrera</label>
-        <input class="" type="text" id="txt_password" name="txt_carrera">
-      </div>
-
-      <div class="grupo-input col-2">
-        <input class="boton" name="btn_registro" type="submit" value="Registro">
-      </div>
+  <div class="fondodatos contenedor col-6">
+      <center>
+        <div class="grupo-input col-4">
+          <label class="" for="txt_nombre">Nombre</label>
+          <input class="form-control" type="text" id="txt_nombre" name="txt_nombre">
+        </div>
+        <br>
+        <div class="grupo-input col-4">
+          <label class="" for="txt_clave">Numero de Control</label>
+          <input class="form-control" type="number" id="txt_clave" name ="txt_noControl">
+        </div>
+        <br>
+        <div class="grupo-input col-4">
+          <label class="" for="txt_password">Carrera</label>
+          <input class="form-control" type="text" id="txt_password" name="txt_carrera">
+        </div>
+        <br>
+        <div class="grupo-input col-4">
+          <input class="btn btn-success" name="btn_registro" type="submit" value="Registro">
+        </div>
+      </center>
   </div>
 </form>
 {% endblock %}
