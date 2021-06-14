@@ -13,17 +13,43 @@ Expediente de {{ numero_control }}
 {% else %}
   <form enctype="multipart/form-data" method="post">
     {% csrf_token %}
-    <div class="fondodatos contenedor col-8">
-      <input class="form-control" style="width: 60%; margin-top: 4%; margin-left: 20%;" type="file" name="archivo" value="Seleccionar archivo">
-      <select class="form-control" style="width: 20%; margin-top: 5%; margin-left: 40%;" name="prefijo">
-        <option value="Ingles">Ingles</option>
-        <option value="Servicio social">Servicio social</option>
-        <option value="Residencias">Residencias</option>
-        <option value="Kardex">Kardex</option>
-        <option value="Acta de nacimiento">Acta de nacimiento</option>
-      </select>
-      <input type="submit" name="subir_archivo" value="Subir archivo" class="btn btn-success" style="margin-top: 5%; margin-left: 43%; margin-bottom: 4%;">
+    <div class="fondodatos contenedor col-6">
+      <center>
+        <h5>Expediente de {{ nombre_completo }}</h5>
+
+        <input class="form-control" style="width: 60%; margin-top: 2%;" type="file" name="archivo" value="Seleccionar archivo">
+        <select class="form-control" style="width: 20%; margin-top: 2%;" name="prefijo">
+          <option value="Ingles">Ingles</option>
+          <option value="Servicio social">Servicio social</option>
+          <option value="Residencias">Residencias</option>
+          <option value="Kardex">Kardex</option>
+          <option value="Acta de nacimiento">Acta de nacimiento</option>
+        </select>
+        <input type="submit" name="subir_archivo" style="margin-top: 2%;" value="Subir archivo" class="btn btn-success">
+      </center>
     </div>
   </form>
+  {% if archivos %}
+  <div class="col-8 container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Ver y descargar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for archivo in archivos %}
+        <tr>
+          <td>{{ archivo.nombre }}</td>
+          <td><a class="btn btn-success" href="/archivo/{{ archivo.id }}">Archivo</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p>No se encontro ningun archivo en el expediente.</p>
+  {% endif %}
 {% endif %}
 {% endblock %}

@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 import pandas as pd
 import json
+import os
 
 from .models import Alumno, Archivo
 
@@ -60,10 +61,15 @@ def ControladorExpediente(request, id):
     data = {'error' : None}
     try:
         alumno = Alumno.objects.get(id=id)
-        data.update({'numero_control': alumno.numero_control})
     except Exception as e:
-        data.update({'error' : 'No existe ese expediente en el repositorio.'})
-        print(e)
+        return HttpResponse('No existe ese expediente de alumno en el repositorio.')
+
+    archivos = Archivo.objects.filter(pertenece_a=Alumno(id))
+    data.update({
+        'nombre_completo': alumno.nombre_completo,
+        'numero_control': alumno.numero_control,
+        'archivos' : archivos,
+    })
 
     if request.method == 'POST' and not data.get('error'):
         if request.FILES.get('archivo'):
@@ -113,3 +119,11 @@ def ControladorAjaxConsulta(request, busqueda, filtro):
     } for alumno in alumnos]
 
     return HttpResponse(json.dumps(data, sort_keys=False, indent=4), content_type="application/json")
+
+def ControladorVerPDF(request, archivo_id):
+    archivo = Archivo.objects.get(id=archivo_id)
+    with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        # response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+        return response
+    pdf.closed
