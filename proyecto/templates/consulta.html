@@ -40,7 +40,7 @@
 {% endblock %} {% block script %}
 <script type="text/javascript">
   $("#btn_buscar").click(function() {
-    var busqueda = $("#txt_nombre").val();
+    var busqueda = $("#txt_nombre").val().toUpperCase();
     var filtro = $("#filtro").val();
 
     $.ajax({
