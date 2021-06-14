@@ -10,11 +10,7 @@ from .models import Alumno, Archivo
 
 
 def ControladorInicio(request):
-    '''
-    # render() es la manera mas facil de enviar html por una respuesta.
-    # request es un objeto peticion con la informacion del navegador, etc.
-    # template_name es un string con la ruta del template.
-    '''
+    data = {}
     return render(request, 'inicio.html')
 
 def ControladorImportarAlumnos(request):
@@ -57,15 +53,8 @@ def ControladorAltaAlumnos(request):
     return render(request, 'alta_usuarios.html')
 
 def ControladorConsultaExpedientes(request):
-    data = request.POST.get('num_control')
-    try:
-        datos = data
-        datos_tabla = Alumno.objects.get(id=datos)
-        data = (datos_tabla.nombre_completo, datos_tabla.numero_control, datos_tabla.carrera)
-    except:
-        data = data
-        print(data)
-    return render(request, 'consulta.html', {'data':data})
+    data = {}
+    return render(request, 'consulta.html')
 
 def ControladorExpediente(request, id):
     data = {'error' : None}
