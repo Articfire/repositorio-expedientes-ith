@@ -1,32 +1,66 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static %} {% block title%}Consulta{% endblock %} {% block content %}
 
-{% block title%}Consulta{% endblock %}
+<div class="fondodatos contenedor col-6">
+  <center>
+    <h3>Consulta de Expedientes</h3>
+    <div class="grupo-input" ; style="width: 50%">
+      <label class="" for="txt_nombre">Introduzca Nombre o NoControl</label>
+      <input class="form-control" type="text" id="txt_nombre" name="txt_nombre">
+    </div>
 
-{% block content %}
+    <div>
+      <label for="filtro" style="margin-top: 4%;">Filtrar por</label>
+      <select class="form-control" style="width: 20%;" id="filtro" name="filtro">
+        <option value="nombre">nombre</option>
+        <option value="numero_control">numero_control</option>
+      </select>
+    </div>
 
-<form class="" action="" method="post">
-    {% csrf_token %}
-	<div class="fondodatos contenedor col-7">
-		<center>
-		<h3>Consulta de Expedientes</h3>
-	    <div class="grupo-input"; style= "width: 50%">
-      	<label class="" for="txt_nombre">Introduzca Nombre o NoControl</label>
-      	<input class="form-control" type="text" id="txt_nombre" name="txt_nombre">
-    	</div>
+    <div class="grupo-input col-4" style="margin-top: 4%;">
+      <input class="btn btn-success" id="btn_buscar" name="btn_buscar" type="submit" value="Buscar">
+    </div>
+  </center>
+</div>
 
-    	<div>
-        <label for="prefijo" style="margin-top: 4%;">Filtrar por</label>
-    		<select class="form-control" style="width: 20%;" id="prefijo" name="prefijo">
-      		<option value="Nombre">Nombre</option>
-      		<option value="NoControl">No. de Control</option>
-    		</select>
-    	</div>
+<div class="col-10 container">
+  <table id="tabla-expedientes" class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">No. control</th>
+        <th scope="col">Carrera</th>
+				<th scope="col">Expediente</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+{% endblock %} {% block script %}
+<script type="text/javascript">
+  $("#btn_buscar").click(function() {
+    var busqueda = $("#txt_nombre").val();
+    var filtro = $("#filtro").val();
 
-    	<div class="grupo-input col-4" style="margin-top: 4%;">
-      	<input class="btn btn-success" name="btn_subir" type="submit" value="Buscar">
-    	</div>
-		</center>
-	</div>
-</form>
+    $.ajax({
+      type: 'GET',
+      url: '/api/alumnos/' + busqueda + '/' + filtro,
+      dataType: 'json',
+      success: function(data) {
+        $("tbody").empty();
+        $.each(data, function(index, element) {
+          var $tr = $('<tr>').append(
+            $('<th>').text(element.id),
+            $('<td>').text(element.nombre_completo),
+            $('<td>').text(element.numero_control),
+            $('<td>').text(element.carrera),
+						$('<td>').html('<a class="btn btn-primary" href="/expediente/'+element.id+'">Ir a expediente</a>'),
+          );
+          $("tbody").append($tr);
+        })
+      }
+    });
+  })
+</script>
 {% endblock %}
