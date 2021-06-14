@@ -42,19 +42,6 @@ nav ul li a{
     font-weight: bold;
 }
 
-nav ul li a::before{
-    display: block;
-    content: '';
-    width: 0%;
-    background: #444;
-    height: 5px;
-    top: 0;
-    position: absolute;
-}
-
-nav ul li a:hover::before{
-    width: 100%;
-}
 
 .menu li{
     list-style: none;
