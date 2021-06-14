@@ -16,7 +16,7 @@ class Archivo(models.Model):
         nombre significa nombre del archivo, excluyendo a la ruta y a la extension. Ej: acta de nacimiento
         ruta significa la ubicacion del archivo es. Ej: /home/martin/Desktop
         extension significa el tipo de archivo. Ej: .pdf, .docx, .xlsx, .exe
-        pertenece_a es la llave foranea que apunta a la tabla ALumno, haciendo una conexion muchos a uno.
+        pertenece_a es la llave foranea que apunta a la tabla Alumno, haciendo una conexion muchos a uno.
     """
     nombre = models.CharField(max_length=50) # varchar(50)
     ruta = models.CharField(max_length=100) # varchar(50)

@@ -1,19 +1,17 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 import pandas as pd
+import json
+import os
 
-from .models import Alumno
+from .models import Alumno, Archivo
 
-# Create your views here.
+
 def ControladorInicio(request):
-    '''
-    # render() es la manera mas facil de enviar html por una respuesta.
-    # request es un objeto peticion con la informacion del navegador, etc.
-    # template_name es un string con la ruta del template.
-    '''
+    data = {}
     return render(request, 'inicio.html')
 
 def ControladorImportarAlumnos(request):
@@ -48,11 +46,84 @@ def ControladorAltaAlumnos(request):
             'numero_control' : request.POST.get('txt_noControl'),
             'carrera' : request.POST.get('txt_carrera'),
         }
-        print(data)
         try:
             insertarAlumno = Alumno(**data)
             insertarAlumno.save()
         except Exception as e:
-            print(e)
             return render(request, '404.html')
     return render(request, 'alta_usuarios.html')
+
+def ControladorConsultaExpedientes(request):
+    data = {}
+    return render(request, 'consulta.html')
+
+def ControladorExpediente(request, id):
+    data = {'error' : None}
+    try:
+        alumno = Alumno.objects.get(id=id)
+    except Exception as e:
+        return HttpResponse('No existe ese expediente de alumno en el repositorio.')
+
+    archivos = Archivo.objects.filter(pertenece_a=Alumno(id))
+    data.update({
+        'nombre_completo': alumno.nombre_completo,
+        'numero_control': alumno.numero_control,
+        'archivos' : archivos,
+    })
+
+    if request.method == 'POST' and not data.get('error'):
+        if request.FILES.get('archivo'):
+            # Obtener valores necesarios del POST y de la base de datos
+            prefijo = request.POST.get('prefijo')
+
+            # Proceso de renombrar archivo subido
+            mi_archivo = request.FILES.get('archivo')
+            ruta = mi_archivo.name.split('/')
+            nombre_y_extension = ruta[-1].split('.')
+            nombre_archivo = prefijo + '_' + str(data.get('numero_control')) + '.' + nombre_y_extension[-1]
+            ruta[-1] = nombre_archivo
+            mi_archivo.name = '/'.join(ruta)
+
+            # Guardar archivo
+            fs = FileSystemStorage()
+            archivo_guardado = fs.save(mi_archivo.name, mi_archivo)
+
+            archivo_anexado = Archivo(
+                nombre = prefijo + '_' + str(data.get('numero_control')),
+                ruta = 'media/',
+                extension = nombre_y_extension[-1],
+                pertenece_a = Alumno(id)
+            )
+            try:
+                archivo_anexado.save()
+            except Exception as e:
+                return render(request, '404.html')
+
+        else:
+            data.update({'error' : 'No subio ningun archivo, porfavor elija uno y subalo.'})
+    return render(request, 'expediente.html', data)
+
+def ControladorAjaxConsulta(request, busqueda, filtro):
+    if filtro == 'nombre':
+        alumnos = Alumno.objects.filter(nombre_completo__contains = busqueda)
+    elif filtro == 'numero_control':
+        alumnos = Alumno.objects.filter(numero_control__contains = busqueda)
+    else:
+        return HttpResponse('No hay ningun filtro llamado '+str(filtro))
+
+    data = [{
+        'id': alumno.id,
+        'nombre_completo': alumno.nombre_completo,
+        'numero_control': alumno.numero_control,
+        'carrera': alumno.carrera,
+    } for alumno in alumnos]
+
+    return HttpResponse(json.dumps(data, sort_keys=False, indent=4), content_type="application/json")
+
+def ControladorVerPDF(request, archivo_id):
+    archivo = Archivo.objects.get(id=archivo_id)
+    with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
+        # response['Content-Disposition'] = 'inline;filename=some_file.pdf'
+        return response
+    pdf.closed

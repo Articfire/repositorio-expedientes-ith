@@ -1,0 +1,8 @@
+Prender en Windows:
+venv/Scripts/activate.bat
+
+Prender en Unix:
+venv/bin/activate
+
+Comando para desactivar:
+deactivate

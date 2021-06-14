@@ -11,11 +11,15 @@
   <center>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <div class="fondodatos contenedor col-6">
         <div class="mb-3">
           <h3>Seleccione archivo Excel</h3>
-          <input class="form-control" name="archivo" type="file" id="formFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" value="Seleccionar Archivo">
+          <input class="form-control" name="archivo" style="width: 60%; margin-top: 3%;" type="file" id="formFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" value="Seleccionar Archivo">
         </div>
-        <input class="btn btn-primary" type="submit" value="Subir">
+        <div class="grupo-input col-4">
+          <input class="btn btn-primary" type="submit" value="Subir">
+        </div>
+      </div>
       </form>
     </center>
 

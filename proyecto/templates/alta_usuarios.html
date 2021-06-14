@@ -1,31 +1,51 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title%}Alta de Usuarios{% endblock %}
+{% block title%}Registro de Alumnos{% endblock %}
 
 {% block content %}
 
 <form class="" action="" method="post">
   {% csrf_token %}
-  <div class="fondodatos contenedor">
-      <div class="grupo-input col-2">
-        <label class="" for="txt_nombre">Nombre</label>
-        <input class="" type="text" id="txt_nombre" name="txt_nombre">
-      </div>
-
-      <div class="grupo-input col-2">
-        <label class="" for="txt_clave">Clave</label>
-        <input class="" type="number" id="txt_clave" name ="txt_noControl">
-      </div>
-
-      <div class="grupo-input col-2">
-        <label class="" for="txt_password">Carrera</label>
-        <input class="" type="text" id="txt_password" name="txt_carrera">
-      </div>
-
-      <div class="grupo-input col-2">
-        <input class="boton" name="btn_registro" type="submit" value="Registro">
-      </div>
+  <div class="fondodatos contenedor col-6">
+      <center>
+        <h3>Registro Manual de Alumnos</h3>
+        <div class="grupo-input col-4">
+          <label class="" for="txt_nombre">Nombre</label>
+          <input class="form-control" type="text" id="txt_nombre" name="txt_nombre">
+        </div>
+        <br>
+        <div class="grupo-input col-4">
+          <label class="" for="txt_clave">Numero de Control</label>
+          <input class="form-control" type="number" id="txt_clave" name ="txt_noControl">
+        </div>
+        <br>
+        <div class="grupo-input col-4">
+          <label for="prefijo" style="margin-top: 4%;">Carrera</label>
+    		  <select class="form-control" style="width: 100%;" id="prefijo" name="txt_carrera">
+      		  <option value="ING. AERONAUTICA">ING. AERONAUTICA</option>
+      		  <option value="ING. BIOMEDICA">ING. BIOMEDICA</option>
+            <option value="ING. ELECTRICA">ING. ELECTRICA</option>
+            <option value="ING. ELECTRONICA">ING. ELECTRONICA</option>
+            <option value="ING. GESTION EMPRESARIAL">ING. GESTION EMPRESARIAL</option>
+            <option value="ING. INDUSTRIAL">ING. INDUSTRIAL</option>
+            <option value="ING. INDUSTRIAL EN INGLES">ING. INDUSTRIAL EN INGLES</option>
+            <option value="ING. MECANICA">ING. MECANICA</option>
+            <option value="ING. MECATRONICA">ING. MECATRONICA</option>
+            <option value="LIC. ADMINISTRACION">LIC. ADMINISTRACION</option>
+            <option value="ING. SISTEMAS COMPUTACIONALES">ING. SISTEMAS COMPUTACIONALES</option>
+            <option value="ING. INFORMATICA">ING. INFORMATICA</option>
+    		  </select>
+        </div>
+        <!--<div class="grupo-input col-4">
+          <label class="" for="txt_password">Carrera</label>
+          <input class="form-control" type="text" id="txt_password" name="txt_carrera">
+        </div>-->
+        <br>
+        <div class="grupo-input col-4">
+          <input class="btn btn-success" name="btn_registro" type="submit" value="Registro">
+        </div>
+      </center>
   </div>
 </form>
 {% endblock %}
