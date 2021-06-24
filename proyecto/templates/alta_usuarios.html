@@ -4,7 +4,6 @@
 {% block title%}Registro de Alumnos{% endblock %}
 
 {% block content %}
-
 <form class="" action="" method="post">
   {% csrf_token %}
   <div class="fondodatos contenedor col-6">
@@ -12,17 +11,18 @@
         <h3>Registro Manual de Alumnos</h3>
         <div class="grupo-input col-4">
           <label class="" for="txt_nombre">Nombre</label>
-          <input class="form-control" type="text" id="txt_nombre" name="txt_nombre">
+          <input class="form-control" type="text" maxlength="50" minlength="10" id="txt_nombre" name="txt_nombre" required>
         </div>
         <br>
         <div class="grupo-input col-4">
           <label class="" for="txt_clave">Numero de Control</label>
-          <input class="form-control" type="number" id="txt_clave" name ="txt_noControl">
+          <input class="form-control" type="number" max="99999999" min="10000000" id="txt_clave" name ="txt_noControl" required>
         </div>
         <br>
         <div class="grupo-input col-4">
           <label for="prefijo" style="margin-top: 4%;">Carrera</label>
-    		  <select class="form-control" style="width: 100%;" id="prefijo" name="txt_carrera">
+    		  <select class="form-control" style="width: 100%;" id="prefijo" name="txt_carrera" required>
+            <option value="">-- Elija una opción --</option>
       		  <option value="ING. AERONAUTICA">ING. AERONAUTICA</option>
       		  <option value="ING. BIOMEDICA">ING. BIOMEDICA</option>
             <option value="ING. ELECTRICA">ING. ELECTRICA</option>
@@ -48,4 +48,5 @@
       </center>
   </div>
 </form>
+{{ error }}
 {% endblock %}

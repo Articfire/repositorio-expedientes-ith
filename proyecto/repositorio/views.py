@@ -38,10 +38,9 @@ def ControladorImportarAlumnos(request):
     return render(request, 'importar.html', data)
 
 def ControladorAltaAlumnos(request):
-    data = {}
+    data = {'error' : ""}
     if request.method == "POST":
-        # Aqui entra cuando btn_registro
-        data={
+        data = {
             'nombre_completo' : request.POST.get('txt_nombre'),
             'numero_control' : request.POST.get('txt_noControl'),
             'carrera' : request.POST.get('txt_carrera'),
@@ -50,8 +49,8 @@ def ControladorAltaAlumnos(request):
             insertarAlumno = Alumno(**data)
             insertarAlumno.save()
         except Exception as e:
-            return render(request, '404.html')
-    return render(request, 'alta_usuarios.html')
+            pass
+    return render(request, 'alta_usuarios.html', data)
 
 def ControladorConsultaExpedientes(request):
     data = {}
@@ -72,7 +71,9 @@ def ControladorExpediente(request, id):
     })
 
     if request.method == 'POST' and not data.get('error'):
-        if request.FILES.get('archivo'):
+        if request.POST.get('prefijo') == "":
+            data.update({'error' : 'Debe elegir una opcion.'})
+        elif request.FILES.get('archivo'):
             # Obtener valores necesarios del POST y de la base de datos
             prefijo = request.POST.get('prefijo')
 
@@ -124,6 +125,5 @@ def ControladorVerPDF(request, archivo_id):
     archivo = Archivo.objects.get(id=archivo_id)
     with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
-        # response['Content-Disposition'] = 'inline;filename=some_file.pdf'
         return response
     pdf.closed

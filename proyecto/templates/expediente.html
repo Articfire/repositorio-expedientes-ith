@@ -17,8 +17,9 @@ Expediente de {{ numero_control }}
       <center>
         <h5>Expediente de {{ nombre_completo }}</h5>
 
-        <input class="form-control" style="width: 60%; margin-top: 2%;" type="file" name="archivo" value="Seleccionar archivo">
-        <select class="form-control" style="width: 20%; margin-top: 2%;" name="prefijo">
+        <input class="form-control" style="width: 60%; margin-top: 2%;" type="file" name="archivo" value="Seleccionar archivo" required>
+        <select class="form-control" style="width: 20%; margin-top: 2%;" name="prefijo" required>
+          <option value="">-- Elija una opción --</option>
           <option value="Ingles">Ingles</option>
           <option value="Servicio social">Servicio social</option>
           <option value="Residencias">Residencias</option>
@@ -42,7 +43,7 @@ Expediente de {{ numero_control }}
         {% for archivo in archivos %}
         <tr>
           <td>{{ archivo.nombre }}</td>
-          <td><a class="btn btn-success" href="/archivo/{{ archivo.id }}">Archivo</a></td>
+          <td><a class="btn btn-success" href="/archivo/{{ archivo.id }}" target="_blank">Archivo</a></td>
         </tr>
         {% endfor %}
       </tbody>

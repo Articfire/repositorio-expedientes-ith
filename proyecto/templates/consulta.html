@@ -5,14 +5,15 @@
     <h3>Consulta de Expedientes</h3>
     <div class="grupo-input" ; style="width: 50%">
       <label class="" for="txt_nombre">Introduzca Nombre o NoControl</label>
-      <input class="form-control" type="text" id="txt_nombre" name="txt_nombre">
+      <input class="form-control" type="text" minlength="8" maxlength="50" id="txt_nombre" name="txt_nombre" required>
     </div>
 
     <div>
       <label for="filtro" style="margin-top: 4%;">Filtrar por</label>
-      <select class="form-control" style="width: 20%;" id="filtro" name="filtro">
-        <option value="nombre">nombre</option>
-        <option value="numero_control">numero_control</option>
+      <select class="form-control" style="width: 20%;" id="filtro" name="filtro" required>
+        <option value="">Elija una opcion</option>
+        <option value="nombre">Nombre</option>
+        <option value="numero_control">Numero de Control</option>
       </select>
     </div>
 
