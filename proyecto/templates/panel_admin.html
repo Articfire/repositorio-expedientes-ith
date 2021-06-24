@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}Panel de Administrador{% endblock %}
+
+{% block content %}
+<form class="" action="" method="post">
+  {% csrf_token %}
+  <div class="fondodatos contenedor col-6">
+    <center>
+      <h3>Registrar usuarios</h3>
+      <div class="grupo-input col-4 mb-2">
+        <label for="nombre_usuario">Nombre</label>
+        <input id="nombre_usuario" name="nombre_usuario" class="form-control" type="text" minlength="8" maxlength="50" placeholder="Nombre de usuario" required>
+      </div>
+      <div class="grupo-input col-4 mb-2">
+        <label for="contraseña_usuario">Contraseña</label>
+        <input id="contraseña_usuario" name ="contraseña_usuario" class="form-control" type="text" minlength="8" maxlength="50" placeholder="Contraseña" required>
+      </div>
+      <div class="grupo-input col-4 mb-2">
+        <label for="repetir_contraseña_usuario">Repetir contraseña</label>
+        <input id="repetir_contraseña_usuario" name ="repetir_contraseña_usuario" class="form-control" type="text" minlength="8" maxlength="50" placeholder="Repetir contraseña" required>
+      </div>
+      <div class="grupo-input col-4 mb-2">
+        <label for="clave">Clave</label>
+        <input id="clave" name="clave" class="form-control" type="number" minlength="8" maxlength="50" placeholder="Clave" required>
+      </div>
+      <div class="grupo-input col-4">
+        <input class="btn btn-success" name="btn_registro" type="submit" value="Registrar Usuario">
+      </div>
+    </center>
+  </div>
+</form>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

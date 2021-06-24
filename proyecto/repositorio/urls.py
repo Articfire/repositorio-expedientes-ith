@@ -8,5 +8,6 @@ urlpatterns = [
     path('consulta', views.ControladorConsultaExpedientes, name='consulta'),
     path('expediente/<int:id>', views.ControladorExpediente, name='expediente'),
     path('api/alumnos/<busqueda>/<filtro>', views.ControladorAjaxConsulta, name='api_consulta'),
-    path('archivo/<int:archivo_id>', views.ControladorVerPDF, name='archivo')
+    path('archivo/<int:archivo_id>', views.ControladorVerPDF, name='archivo'),
+    path('panel_admin', views.ControladorPanelAdmin, name='panel_admin'),
 ]

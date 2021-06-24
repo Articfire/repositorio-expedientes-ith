@@ -127,3 +127,7 @@ def ControladorVerPDF(request, archivo_id):
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         return response
     pdf.closed
+
+def ControladorPanelAdmin(request):
+    data = {}
+    return render(request, 'panel_admin.html', data)
