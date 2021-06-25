@@ -11,4 +11,5 @@ urlpatterns = [
     path('archivo/<int:archivo_id>', views.ControladorVerPDF, name='archivo'),
     path('panel_admin', views.ControladorPanelAdmin, name='panel_admin'),
     path('login',views.ControladorLogin, name='login'),
+    path('logout',views.ControladorLogout, name='logout'),
 ]

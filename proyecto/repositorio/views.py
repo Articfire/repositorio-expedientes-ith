@@ -144,3 +144,7 @@ def ControladorLogin(request):
         else:
             return redirect('/login')
     return render(request, 'login.html')
+
+def ControladorLogout(request):
+    logout(request)
+    return redirect('/login')
