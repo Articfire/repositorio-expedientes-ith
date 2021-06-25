@@ -24,16 +24,19 @@ def ControladorImportarAlumnos(request):
             fs = FileSystemStorage()
             nombre_archivo = fs.save(mi_archivo.name, mi_archivo)
 
-            info_excel = pd.read_excel(r'media/{}'.format(mi_archivo.name))
-            diccionario_alumnos = info_excel.to_dict('index')
+            try:
+                info_excel = pd.read_excel(r'media/{}'.format(mi_archivo.name))
+                diccionario_alumnos = info_excel.to_dict('index')
 
-            for fila in diccionario_alumnos.values():
-                alumno_nuevo = Alumno(
-                    nombre_completo = str(fila.get('apellido_paterno')) + ' ' + str(fila.get('apellido_materno')) + ' ' + str(fila.get('nombre_aspirante')),
-                    numero_control = fila.get('no_control'),
-                    carrera = fila.get('carrera')
-                )
-                alumno_nuevo.save()
+                for fila in diccionario_alumnos.values():
+                    alumno_nuevo = Alumno(
+                        nombre_completo = str(fila.get('apellido_paterno')) + ' ' + str(fila.get('apellido_materno')) + ' ' + str(fila.get('nombre_aspirante')),
+                        numero_control = fila.get('no_control'),
+                        carrera = fila.get('carrera')
+                    )
+                    alumno_nuevo.save()
+            except Exception as e:
+                data['error'] = 'El archivo que intentó subir no es de excel'
         else:
             data['error'] = 'No subio ningun archivo, porfavor elija uno y subalo.'
     return render(request, 'importar.html', data)
@@ -128,10 +131,6 @@ def ControladorVerPDF(request, archivo_id):
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         return response
     pdf.closed
-
-def ControladorPanelAdmin(request):
-    data = {}
-    return render(request, 'panel_admin.html', data)
 
 def ControladorLogin(request):
     if request.method=="POST":

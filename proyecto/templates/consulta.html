@@ -3,73 +3,75 @@
 {% block content %}
 
 <div class="fondodatos contenedor col-6">
-  <center>
-    <h3>Consulta de Expedientes</h3>
-    <div class="grupo-input" ; style="width: 50%">
-      <label class="" for="txt_nombre">Introduzca Nombre o NoControl</label>
-      <input class="form-control" type="text" minlength="8" maxlength="50" id="txt_nombre" name="txt_nombre" required>
-    </div>
+	<center>
+		<form action="" onsubmit="return false">
+			<h3>Consulta de Expedientes</h3>
+			<div class="grupo-input" ; style="width: 50%">
+				<label class="" for="txt_nombre">Introduzca Nombre o NoControl</label>
+				<input class="form-control" type="text" id="txt_nombre" name="txt_nombre" required>
+			</div>
 
-    <div>
-      <label for="filtro" style="margin-top: 4%;">Filtrar por</label>
-      <select class="form-control" style="width: 20%;" id="filtro" name="filtro" required>
-        <option value="">Elija una opcion</option>
-        <option value="nombre">Nombre</option>
-        <option value="numero_control">Numero de Control</option>
-      </select>
-    </div>
+			<div>
+				<label for="filtro" style="margin-top: 4%;">Filtrar por</label>
+				<select class="form-control" style="width: 20%;" id="filtro" name="filtro" required>
+					<option value="">Elija una opcion</option>
+					<option value="nombre">Nombre</option>
+					<option value="numero_control">Numero de Control</option>
+				</select>
+			</div>
 
-    <div class="grupo-input col-4" style="margin-top: 4%;">
-      <input class="btn btn-success" id="btn_buscar" name="btn_buscar" type="submit" value="Buscar">
-    </div>
-  </center>
+			<div class="grupo-input col-4" style="margin-top: 4%;">
+				<input class="btn btn-success" id="btn_buscar" name="btn_buscar" type="submit" value="Buscar">
+			</div>
+		</form>
+	</center>
 </div>
 
 <div class="col-10 container">
-  <table id="tabla-expedientes" class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">No. control</th>
-        <th scope="col">Carrera</th>
+	<table id="tabla-expedientes" class="table">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Nombre</th>
+				<th scope="col">No. control</th>
+				<th scope="col">Carrera</th>
 				<th scope="col">Expediente</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
 </div>
 {% endblock %} {% block script %}
 <script type="text/javascript">
-  $("#btn_buscar").click(function() {
-    var busqueda = $("#txt_nombre").val().toUpperCase();
-    var filtro = $("#filtro").val();
+	$("#btn_buscar").click(function() {
+		var busqueda = $("#txt_nombre").val().toUpperCase();
+		var filtro = $("#filtro").val();
 
-    $.ajax({
-      type: 'GET',
-      url: '/api/alumnos/' + busqueda + '/' + filtro,
-      dataType: 'json',
-      success: function(data) {
-        $("tbody").empty();
-        $.each(data, function(index, element) {
-          var $tr = $('<tr>').append(
-            $('<th>').text(element.id),
-            $('<td>').text(element.nombre_completo),
-            $('<td>').text(element.numero_control),
-            $('<td>').text(element.carrera),
+		$.ajax({
+			type: 'GET',
+			url: '/api/alumnos/' + busqueda + '/' + filtro,
+			dataType: 'json',
+			success: function(data) {
+				$("tbody").empty();
+				$.each(data, function(index, element) {
+					var $tr = $('<tr>').append(
+						$('<th>').text(element.id),
+						$('<td>').text(element.nombre_completo),
+						$('<td>').text(element.numero_control),
+						$('<td>').text(element.carrera),
 						$('<td>').html('<a class="btn btn-primary" href="/expediente/'+element.id+'">Ir a expediente</a>'),
-          );
-          $("tbody").append($tr);
-        })
-      }
-    });
-  })
+					);
+					$("tbody").append($tr);
+				})
+			}
+		});
+	})
 </script>
 {% endblock %}
 {% else %}
 <center>
-  <h3 class="mt-4">No ha inciado sesion</h3>
-  <a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
+	<h3 class="mt-4">No ha inciado sesion</h3>
+	<a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
 </center>
 {% endif %}
