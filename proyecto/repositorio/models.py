@@ -11,6 +11,9 @@ class Alumno(models.Model):
     numero_control = models.IntegerField(default=0) # int
     carrera = models.CharField(max_length=50) # varchar(50)
 
+    def __str__(self):
+        return self.nombre_completo
+
 class Archivo(models.Model):
     """docstring for Archivo.
         nombre significa nombre del archivo, excluyendo a la ruta y a la extension. Ej: acta de nacimiento
@@ -22,3 +25,6 @@ class Archivo(models.Model):
     ruta = models.CharField(max_length=100) # varchar(50)
     extension = models.CharField(max_length=5) # varchar(50)
     pertenece_a = models.ForeignKey(Alumno, on_delete=models.CASCADE) # int
+
+    def __str__(self):
+        return "{}.{}".format(self.nombre, self.extension)
