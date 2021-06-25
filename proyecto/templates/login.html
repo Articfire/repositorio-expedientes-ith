@@ -1,7 +1,11 @@
-{% extends 'base.html' %}
+
 {% load static %}
-{% block title%}Inicio Sesion{% endblock %}
-{% block content %}
+<header>
+		<h1>Tecnologico Nacional de Mexico</h1>
+		<h2>Instituto Tecnologico de Hermosillo</h2>
+		<img src="{% static 'images/ith_logo.png' %}" alt="Logo Ith">
+		<!-- /home/martin/repositorio-expedientes-ith/proyecto/static/images/ith_logo.png -->
+</header>
 <title>Inicio de Sesion</title>
 
 <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
@@ -28,4 +32,3 @@
   </center>
 </div>
 </form>
-{% endblock%}

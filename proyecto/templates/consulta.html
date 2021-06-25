@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block title%}Consulta{% endblock %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block title%}Consulta{% endblock %}
+{% if request.user.is_authenticated %}
+{% block content %}
 
 <div class="fondodatos contenedor col-6">
   <center>
@@ -65,3 +67,9 @@
   })
 </script>
 {% endblock %}
+{% else %}
+<center>
+  <h3 class="mt-4">No ha inciado sesion</h3>
+  <a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
+</center>
+{% endif %}

@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block title%}Registro de Alumnos{% endblock %}
-
+{% if request.user.is_authenticated %}
 {% block content %}
+
 <form class="" action="" method="post">
   {% csrf_token %}
   <div class="fondodatos contenedor col-6">
@@ -50,3 +51,9 @@
 </form>
 {{ error }}
 {% endblock %}
+{% else %}
+<center>
+  <h3 class="mt-4">No ha inciado sesion</h3>
+  <a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
+</center>
+{% endif %}
