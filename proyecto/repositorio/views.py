@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, FileResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth import authenticate, login, logout
 
 import pandas as pd
 import json
@@ -131,3 +132,15 @@ def ControladorVerPDF(request, archivo_id):
 def ControladorPanelAdmin(request):
     data = {}
     return render(request, 'panel_admin.html', data)
+
+def ControladorLogin(request):
+    if request.method=="POST":
+        claveUsr = request.POST.get("txt_clave")
+        passwrd = request.POST.get("txt_password")
+        user = authenticate(username=claveUsr, password=passwrd)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            return redirect('/login')
+    return render(request, 'login.html')

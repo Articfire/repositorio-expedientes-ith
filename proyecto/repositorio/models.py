@@ -22,6 +22,3 @@ class Archivo(models.Model):
     ruta = models.CharField(max_length=100) # varchar(50)
     extension = models.CharField(max_length=5) # varchar(50)
     pertenece_a = models.ForeignKey(Alumno, on_delete=models.CASCADE) # int
-
-class Usuario(models.Model):
-    """docstring for Usuario."""
