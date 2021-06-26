@@ -8,7 +8,7 @@ class Alumno(models.Model):
         carrera es que carrera eligio el alumno.
     """
     nombre_completo = models.CharField(max_length=50) # varchar(50)
-    numero_control = models.IntegerField(default=0) # int
+    numero_control = models.IntegerField(default=0, unique = True) # int
     carrera = models.CharField(max_length=50) # varchar(50)
 
     def __str__(self):

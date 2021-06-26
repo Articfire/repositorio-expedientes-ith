@@ -4,7 +4,7 @@
 
 <div class="fondodatos contenedor col-6">
 	<center>
-		<form action="" onsubmit="return false">
+		<form id="searchForm" action="" onsubmit="return false">
 			<h3>Consulta de Expedientes</h3>
 			<div class="grupo-input" ; style="width: 50%">
 				<label class="" for="txt_nombre">Introduzca Nombre o NoControl</label>
@@ -27,6 +27,13 @@
 	</center>
 </div>
 
+<center>
+	<div id="loaderDiv" style="display: none; align: center;">
+		<h4>Cargando resultados...</h4>
+		<img style="margin-left: 50vw; margin-top: 10px; width: 30px;" src="{% static 'images/ajax-loader.gif'%}" alt="Cargando resultados...">
+	</div>
+</center>
+
 <div class="col-10 container">
 	<table id="tabla-expedientes" class="table">
 		<thead>
@@ -44,7 +51,7 @@
 </div>
 {% endblock %} {% block script %}
 <script type="text/javascript">
-	$("#btn_buscar").click(function() {
+	$("#searchForm").submit(function() {
 		var busqueda = $("#txt_nombre").val().toUpperCase();
 		var filtro = $("#filtro").val();
 
@@ -52,6 +59,9 @@
 			type: 'GET',
 			url: '/api/alumnos/' + busqueda + '/' + filtro,
 			dataType: 'json',
+			beforeSend: function() {
+        $("#loaderDiv").show();
+    	},
 			success: function(data) {
 				$("tbody").empty();
 				$.each(data, function(index, element) {
@@ -64,6 +74,7 @@
 					);
 					$("tbody").append($tr);
 				})
+				$("#loaderDiv").hide();
 			}
 		});
 	})

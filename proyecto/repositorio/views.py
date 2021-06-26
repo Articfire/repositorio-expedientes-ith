@@ -3,6 +3,7 @@ from django.http import HttpResponse, FileResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth import authenticate, login, logout
+from django.db import IntegrityError
 
 import pandas as pd
 import json
@@ -28,6 +29,10 @@ def ControladorImportarAlumnos(request):
                 info_excel = pd.read_excel(r'media/{}'.format(mi_archivo.name))
                 diccionario_alumnos = info_excel.to_dict('index')
 
+            except Exception as e:
+                data['error'] = 'El archivo que intentó subir no es de excel'
+
+            try:
                 for fila in diccionario_alumnos.values():
                     alumno_nuevo = Alumno(
                         nombre_completo = str(fila.get('apellido_paterno')) + ' ' + str(fila.get('apellido_materno')) + ' ' + str(fila.get('nombre_aspirante')),
@@ -36,7 +41,8 @@ def ControladorImportarAlumnos(request):
                     )
                     alumno_nuevo.save()
             except Exception as e:
-                data['error'] = 'El archivo que intentó subir no es de excel'
+                data['error'] = 'Ya hay un numero de control asi ingresado.'
+
         else:
             data['error'] = 'No subio ningun archivo, porfavor elija uno y subalo.'
     return render(request, 'importar.html', data)
