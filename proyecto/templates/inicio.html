@@ -2,6 +2,15 @@
 {% load static %}
 
 {% block title%}Inicio{% endblock %}
-
-{% block content %}
+{% block content%}
+{% if request.user.is_authenticated %}
+  <center>
+    <h3 class="mt-4">Bienvenid@ {{request.user }}</h3>
+  </center>
+{% else %}
+  <center>
+    <h3 class="mt-4">No ha inciado sesion</h3>
+    <a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
+  </center>
+{% endif %}
 {% endblock %}
