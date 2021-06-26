@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, FileResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth import authenticate, login, logout
+from django.db import IntegrityError
 
 import pandas as pd
 import json
@@ -23,25 +25,32 @@ def ControladorImportarAlumnos(request):
             fs = FileSystemStorage()
             nombre_archivo = fs.save(mi_archivo.name, mi_archivo)
 
-            info_excel = pd.read_excel(r'media/{}'.format(mi_archivo.name))
-            diccionario_alumnos = info_excel.to_dict('index')
+            try:
+                info_excel = pd.read_excel(r'media/{}'.format(mi_archivo.name))
+                diccionario_alumnos = info_excel.to_dict('index')
 
-            for fila in diccionario_alumnos.values():
-                alumno_nuevo = Alumno(
-                    nombre_completo = str(fila.get('apellido_paterno')) + ' ' + str(fila.get('apellido_materno')) + ' ' + str(fila.get('nombre_aspirante')),
-                    numero_control = fila.get('no_control'),
-                    carrera = fila.get('carrera')
-                )
-                alumno_nuevo.save()
+            except Exception as e:
+                data['error'] = 'El archivo que intentó subir no es de excel'
+
+            try:
+                for fila in diccionario_alumnos.values():
+                    alumno_nuevo = Alumno(
+                        nombre_completo = str(fila.get('apellido_paterno')) + ' ' + str(fila.get('apellido_materno')) + ' ' + str(fila.get('nombre_aspirante')),
+                        numero_control = fila.get('no_control'),
+                        carrera = fila.get('carrera')
+                    )
+                    alumno_nuevo.save()
+            except Exception as e:
+                data['error'] = 'Ya hay un numero de control asi ingresado.'
+
         else:
             data['error'] = 'No subio ningun archivo, porfavor elija uno y subalo.'
     return render(request, 'importar.html', data)
 
 def ControladorAltaAlumnos(request):
-    data = {}
+    data = {'error' : ""}
     if request.method == "POST":
-        # Aqui entra cuando btn_registro
-        data={
+        data = {
             'nombre_completo' : request.POST.get('txt_nombre'),
             'numero_control' : request.POST.get('txt_noControl'),
             'carrera' : request.POST.get('txt_carrera'),
@@ -50,8 +59,8 @@ def ControladorAltaAlumnos(request):
             insertarAlumno = Alumno(**data)
             insertarAlumno.save()
         except Exception as e:
-            return render(request, '404.html')
-    return render(request, 'alta_usuarios.html')
+            pass
+    return render(request, 'alta_usuarios.html', data)
 
 def ControladorConsultaExpedientes(request):
     data = {}
@@ -72,7 +81,9 @@ def ControladorExpediente(request, id):
     })
 
     if request.method == 'POST' and not data.get('error'):
-        if request.FILES.get('archivo'):
+        if request.POST.get('prefijo') == "":
+            data.update({'error' : 'Debe elegir una opcion.'})
+        elif request.FILES.get('archivo'):
             # Obtener valores necesarios del POST y de la base de datos
             prefijo = request.POST.get('prefijo')
 
@@ -124,6 +135,21 @@ def ControladorVerPDF(request, archivo_id):
     archivo = Archivo.objects.get(id=archivo_id)
     with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
-        # response['Content-Disposition'] = 'inline;filename=some_file.pdf'
         return response
     pdf.closed
+
+def ControladorLogin(request):
+    if request.method=="POST":
+        claveUsr = request.POST.get("txt_clave")
+        passwrd = request.POST.get("txt_password")
+        user = authenticate(username=claveUsr, password=passwrd)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            return redirect('/login')
+    return render(request, 'login.html')
+
+def ControladorLogout(request):
+    logout(request)
+    return redirect('/login')

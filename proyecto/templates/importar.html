@@ -7,14 +7,16 @@
 <!-- Hey, tu, quien vaya a diseñar esta pantalla, respeta este form, es
  para subir archivos excel al backend. Diseña el html adentro de las
  etiquetas block, que sirven para el motor de templates de django. -->
-
+  {% if request.user.is_authenticated %}
   <center>
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="fondodatos contenedor col-6">
         <div class="mb-3">
           <h3>Seleccione archivo Excel</h3>
-          <input class="form-control" name="archivo" style="width: 60%; margin-top: 3%;" type="file" id="formFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" value="Seleccionar Archivo">
+          <input class="form-control" name="archivo" style="width: 60%; margin-top: 3%;"
+          type="file" id="formFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+          value="Seleccionar Archivo" required>
         </div>
         <div class="grupo-input col-4">
           <input class="btn btn-primary" type="submit" value="Subir">
@@ -22,8 +24,15 @@
       </div>
       </form>
     </center>
-
+    {% else %}
+      <center>
+        <h3 class="mt-4">No ha inciado sesion</h3>
+        <a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
+      </center>
+    {% endif %}
   {% if error %}
-    <p>{{ error }}</p>
+    <center>
+      <h3>Error: {{ error }}</h3>
+    </center>
   {% endif %}
 {% endblock %}
