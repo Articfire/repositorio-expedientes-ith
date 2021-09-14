@@ -6,11 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 
 import pandas as pd
 import json
-import os
 
 from .models import Alumno, Archivo
+# from .overwrite_storage import OverwriteStorage
 
-# eeeeeoooo sup bruh cracketty crackster
 def ControladorInicio(request):
     data = {}
     return render(request, 'inicio.html')
