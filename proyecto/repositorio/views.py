@@ -3,7 +3,6 @@ from django.http import HttpResponse, FileResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
 
 import pandas as pd
 import json
@@ -136,7 +135,7 @@ def ControladorAjaxConsulta(request, busqueda, filtro):
 
 def ControladorVerPDF(request, archivo_id):
     archivo = Archivo.objects.get(id=archivo_id)
-    with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
+    with open('{}/{}.{}'.format(settings.STATIC_ROOT + '/media', archivo.nombre, archivo.extension), 'rb') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         return response
     pdf.closed
