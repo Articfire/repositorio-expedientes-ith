@@ -5,61 +5,76 @@
 {% block title %}
 Expediente de {{ numero_control }}
 {% endblock %}
-{% if request.user.is_authenticated %}
-{% block content %}
-{% if error %}
-  {{ error }}
-  <a class="btn btn-primary" href="/">Volver al inicio</a>
-{% else %}
-  <form enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    <div class="fondodatos contenedor col-6">
-      <center>
-        <h5>Expediente de {{ nombre_completo }}</h5>
 
-        <input class="form-control" style="width: 60%; margin-top: 2%;" type="file" name="archivo" value="Seleccionar archivo" required>
-        <select class="form-control" style="width: 20%; margin-top: 2%;" name="prefijo" required>
-          <option value="">-- Elija una opción --</option>
-          <option value="Certificado de Terminacion de Estudios">Certificado de Terminacion de Estudios</option>
-          <option value="Certificado de Bachillerato">Certificado de Bachillerato</option>
-          <option value="Contrato">Contrato</option>
-          <option value="Ingles">Ingles</option>
-          <option value="Servicio social">Servicio social</option>
-          <option value="Residencias">Residencias</option>
-          <option value="Kardex">Kardex</option>
-          <option value="Acta de nacimiento">Acta de nacimiento</option>
-        </select>
-        <input type="submit" name="subir_archivo" style="margin-top: 2%;" value="Subir archivo" class="btn btn-success">
-      </center>
-    </div>
-  </form>
-  {% if archivos %}
-  <div class="col-8 container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Nombre</th>
-          <th scope="col">Ver y descargar</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for archivo in archivos %}
-        <tr>
-          <td>{{ archivo.nombre }}</td>
-          <td><a class="btn btn-success" href="/archivo/{{ archivo.id }}" target="_blank">Archivo</a></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+{% block content %}
+  {% if error %}
+    {{ error }}
+    <center>
+      <a class="btn btn-primary" href="/">Volver al inicio</a>
+    </center>
   {% else %}
-  <p>No se encontro ningun archivo en el expediente.</p>
+    <form enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      <div class="fondodatos contenedor col-6">
+        <center>
+          <h5>Expediente de {{ nombre_completo }}</h5>
+
+          <input class="form-control" style="width: 60%; margin-top: 2%;" type="file" name="archivo" value="Seleccionar archivo" required>
+
+          <input class="form-control" style="width: 60%; margin-top: 2%;" oninput="ControlDeListaOpciones();" type="text" name="prefijo-personalizado" id="prefijo-personalizado" placeholder="Prefijo personalizado">
+
+          <select class="form-control" style="width: 30%; margin-top: 2%;" name="prefijo" id="lista-opciones">
+            <option value="">-- Elija una opción --</option>
+            <option value="Certificado de Terminacion de Estudios">Certificado de Terminacion de Estudios</option>
+            <option value="Certificado de Bachillerato">Certificado de Bachillerato</option>
+            <option value="Contrato">Contrato</option>
+            <option value="Ingles">Ingles</option>
+            <option value="Servicio social">Servicio social</option>
+            <option value="Residencias">Residencias</option>
+            <option value="Kardex">Kardex</option>
+            <option value="Acta de nacimiento">Acta de nacimiento</option>
+          </select>
+
+          <input type="submit" name="subir_archivo" style="margin-top: 2%;" value="Subir archivo" class="btn btn-success">
+        </center>
+      </div>
+    </form>
+    {% if archivos %}
+    <div class="col-8 container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Ver y descargar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for archivo in archivos %}
+          <tr>
+            <td>{{ archivo.nombre }}</td>
+            <td><a class="btn btn-success" href="/archivo/{{ archivo.id }}" target="_blank">Archivo</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <center>
+      <p>No se encontro ningun archivo en el expediente.</p>
+    </center>
+    {% endif %}
   {% endif %}
-{% endif %}
 {% endblock %}
-{% else %}
-<center>
-  <h3 class="mt-4">No ha inciado sesion</h3>
-  <a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
-</center>
-{% endif %}
+
+{% block script %}
+<script type="text/javascript">
+  function ControlDeListaOpciones(){
+    if ($("#prefijo-personalizado").val() == '') {
+      $("#lista-opciones").show()
+    }
+    else {
+      $("#lista-opciones").hide()
+    }
+  }
+</script>
+{% endblock %}

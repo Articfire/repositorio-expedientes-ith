@@ -11,7 +11,7 @@ import os
 
 from .models import Alumno, Archivo
 
-
+# eeeeeoooo sup bruh cracketty crackster
 def ControladorInicio(request):
     data = {}
     return render(request, 'inicio.html')
@@ -81,11 +81,14 @@ def ControladorExpediente(request, id):
     })
 
     if request.method == 'POST' and not data.get('error'):
-        if request.POST.get('prefijo') == "":
+        if request.POST.get('prefijo') == "" and request.POST.get('prefijo-personalizado') == "":
             data.update({'error' : 'Debe elegir una opcion.'})
         elif request.FILES.get('archivo'):
             # Obtener valores necesarios del POST y de la base de datos
-            prefijo = request.POST.get('prefijo')
+            if request.POST.get('prefijo-personalizado') == "":
+                prefijo = request.POST.get('prefijo')
+            else:
+                prefijo = request.POST.get('prefijo-personalizado')
 
             # Proceso de renombrar archivo subido
             mi_archivo = request.FILES.get('archivo')
@@ -101,13 +104,13 @@ def ControladorExpediente(request, id):
 
             archivo_anexado = Archivo(
                 nombre = prefijo + '_' + str(data.get('numero_control')),
-                ruta = 'media/',
                 extension = nombre_y_extension[-1],
                 pertenece_a = Alumno(id)
             )
             try:
                 archivo_anexado.save()
             except Exception as e:
+                print(e)
                 return render(request, '404.html')
 
         else:

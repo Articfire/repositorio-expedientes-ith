@@ -7,7 +7,6 @@
 <!-- Hey, tu, quien vaya a diseñar esta pantalla, respeta este form, es
  para subir archivos excel al backend. Diseña el html adentro de las
  etiquetas block, que sirven para el motor de templates de django. -->
-  {% if request.user.is_authenticated %}
   <center>
       <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
@@ -24,12 +23,6 @@
       </div>
       </form>
     </center>
-    {% else %}
-      <center>
-        <h3 class="mt-4">No ha inciado sesion</h3>
-        <a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
-      </center>
-    {% endif %}
   {% if error %}
     <center>
       <h3>Error: {{ error }}</h3>
