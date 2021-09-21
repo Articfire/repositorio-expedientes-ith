@@ -144,9 +144,10 @@ def ControladorVerPDF(request, archivo_id):
     try:
         archivo = Archivo.objects.get(id=archivo_id)
         with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
-            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            response = HttpResponse(pdf.read(), content_type='application/{}'.format(archivo.extension))
+            response['Content-Disposition'] = 'inline;filename={}.{}'.format(archivo.nombre, archivo.extension)
             return response
-            pdf.closed
+        pdf.closed
     except Exception as ex:
         print(ex)
 
