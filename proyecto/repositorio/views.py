@@ -148,8 +148,8 @@ def ControladorVerPDF(request, archivo_id):
             response['Content-Disposition'] = 'inline;filename={}.{}'.format(archivo.nombre, archivo.extension)
             return response
         pdf.closed
-    except Exception as ex:
-        print(ex)
+    except ValueError as ve:
+        return ("No existe tal archivo.")
 
 def ControladorLogin(request):
     if request.method=="POST":
