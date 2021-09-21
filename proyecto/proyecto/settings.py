@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-p1y#y3sa#$i5i+kesqjx%dv=9)s2(zpf!^yzsa3+ec@8l!kfd(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'https://expedientes-ith.herokuapp.com/']
 
 
 # Application definition
@@ -77,24 +77,16 @@ WSGI_APPLICATION = 'proyecto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     # mysql_development_database
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'repositorio_dev',
-#         'USER': 'root',
-#         'PASSWORD': 'mysqlroot',
-#         'HOST': '127.0.0.1',
-#         'PORT': '3306',
-#     }
-# }
-import dj_database_url
-from decouple import config
-
 DATABASES = {
-    'default' : dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
+    # mysql_development_database
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'repositorio_dev',
+        'USER': 'root',
+        'PASSWORD': 'mysqlroot',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
 }
 
 # Password validation

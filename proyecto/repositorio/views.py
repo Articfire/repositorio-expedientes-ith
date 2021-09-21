@@ -6,11 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 
 import pandas as pd
 import json
-import os
 
 from .models import Alumno, Archivo
+from .overwrite_storage import OverwriteStorage
 
-# eeeeeoooo sup bruh cracketty crackster
 def ControladorInicio(request):
     data = {}
     return render(request, 'inicio.html')
@@ -21,7 +20,7 @@ def ControladorImportarAlumnos(request):
     if request.method == 'POST':
         if request.FILES.get('archivo'):
             mi_archivo = request.FILES.get('archivo')
-            fs = FileSystemStorage()
+            fs = OverwriteStorage()
             nombre_archivo = fs.save(mi_archivo.name, mi_archivo)
 
             try:
@@ -98,7 +97,7 @@ def ControladorExpediente(request, id):
             mi_archivo.name = '/'.join(ruta)
 
             # Guardar archivo
-            fs = FileSystemStorage()
+            fs = OverwriteStorage()
             archivo_guardado = fs.save(mi_archivo.name, mi_archivo)
 
             archivo_anexado = Archivo(
