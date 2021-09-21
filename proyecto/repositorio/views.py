@@ -88,7 +88,7 @@ def ControladorExpediente(request, id):
             else:
                 prefijo = request.POST.get('prefijo-personalizado')
 
-            # Proceso de renombrar archivo subido
+            # Proceso para cambiarle el nombre al archivo subido
             mi_archivo = request.FILES.get('archivo')
             ruta = mi_archivo.name.split('/')
             nombre_y_extension = ruta[-1].split('.')
@@ -96,21 +96,21 @@ def ControladorExpediente(request, id):
             ruta[-1] = nombre_archivo
             mi_archivo.name = '/'.join(ruta)
 
-            # Guardar archivo
+            # Guardar o Sobreescribir el archivo.
             fs = OverwriteStorage()
             archivo_guardado = fs.save(mi_archivo.name, mi_archivo)
 
-            archivo_anexado = Archivo(
+            # Preparar consulta para insertar a la tabla de archivos.
+            archivo_a_anexar = Archivo(
                 nombre = prefijo + '_' + str(data.get('numero_control')),
                 extension = nombre_y_extension[-1],
                 pertenece_a = Alumno(id)
             )
-            try:
-                archivo_anexado.save()
-            except Exception as e:
-                print(e)
-                return render(request, '404.html')
 
+            # Si el nombre del archivo a insertar no lo tiene otro archivo en la tabla,
+            # ejecutar consulta para INSERTAR.
+            if not archivo_a_anexar.nombre in [archivo.nombre for archivo in archivos]:
+                archivo_a_anexar.save()
         else:
             data.update({'error' : 'No subio ningun archivo, porfavor elija uno y subalo.'})
     return render(request, 'expediente.html', data)
@@ -134,7 +134,7 @@ def ControladorAjaxConsulta(request, busqueda, filtro):
 
 def ControladorVerPDF(request, archivo_id):
     archivo = Archivo.objects.get(id=archivo_id)
-    with open('{}/{}.{}'.format(settings.STATIC_ROOT + '/media', archivo.nombre, archivo.extension), 'rb') as pdf:
+    with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         return response
     pdf.closed
