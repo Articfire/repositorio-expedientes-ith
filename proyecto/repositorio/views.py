@@ -46,18 +46,28 @@ def ControladorImportarAlumnos(request):
     return render(request, 'importar.html', data)
 
 def ControladorAltaAlumnos(request):
-    data = {'error' : ""}
+    data = {'error' : None}
     if request.method == "POST":
-        data = {
-            'nombre_completo' : request.POST.get('txt_nombre'),
-            'numero_control' : request.POST.get('txt_noControl'),
-            'carrera' : request.POST.get('txt_carrera'),
-        }
+        # validaciones del lado del servidor
         try:
-            insertarAlumno = Alumno(**data)
-            insertarAlumno.save()
-        except Exception as e:
-            pass
+            alumno_a_registrar = Alumno(
+                nombre_completo = request.POST.get('txt_nombre'),
+                numero_control = request.POST.get('txt_noControl'),
+                carrera = request.POST.get('txt_carrera'),
+            )
+            alumno_a_registrar.save()
+        except ValueError as e:
+            if not (type(alumno_a_registrar.nombre_completo) == type('')):
+                data['error'] = "El tipo de dato en el campo 'Nombre Completo' es incorrecto."
+            elif not (type(alumno_a_registrar.numero_control) == type(0)):
+                data['error'] = "El tipo de dato en el campo 'Numero Control' es incorrecto."
+            elif not (type(alumno_a_registrar.carrera) == type('')):
+                data['error'] = "El tipo de dato en el campo 'Carrera' es incorrecto."
+        else:
+            if not 50 >= len(alumno_a_registrar.nombre_completo) >= 10:
+                data['error'] = "El nombre completo debe tener entre 50 y 10 caracteres."
+            elif not 8 >= len(alumno_a_registrar.numero_control) >= 7:
+                data['error'] = "El numero de control debe tener entre 8 y 7 digitos."
     return render(request, 'alta_usuarios.html', data)
 
 def ControladorConsultaExpedientes(request):

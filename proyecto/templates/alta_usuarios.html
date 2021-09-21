@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block title%}Registro de Alumnos{% endblock %}
-{% if request.user.is_authenticated %}
 {% block content %}
 
 <form class="" action="" method="post">
@@ -12,12 +11,12 @@
         <h3>Registro Manual de Alumnos</h3>
         <div class="grupo-input col-4">
           <label class="" for="txt_nombre">Nombre</label>
-          <input class="form-control" type="text" maxlength="50" minlength="10" id="txt_nombre" name="txt_nombre" required>
+          <input class="form-control" type="text" id="txt_nombre" name="txt_nombre" required>
         </div>
         <br>
         <div class="grupo-input col-4">
           <label class="" for="txt_clave">Numero de Control</label>
-          <input class="form-control" type="number" max="99999999" min="10000000" id="txt_clave" name ="txt_noControl" required>
+          <input class="form-control" type="number" id="txt_clave" name ="txt_noControl" required>
         </div>
         <br>
         <div class="grupo-input col-4">
@@ -38,10 +37,6 @@
             <option value="ING. INFORMATICA">ING. INFORMATICA</option>
     		  </select>
         </div>
-        <!--<div class="grupo-input col-4">
-          <label class="" for="txt_password">Carrera</label>
-          <input class="form-control" type="text" id="txt_password" name="txt_carrera">
-        </div>-->
         <br>
         <div class="grupo-input col-4">
           <input class="btn btn-success" name="btn_registro" type="submit" value="Registro">
@@ -49,11 +44,11 @@
       </center>
   </div>
 </form>
-{{ error }}
+  {% if error %}
+  <center>
+    <p>
+      {{ error }}
+    </p>
+  </center>
+  {% endif %}
 {% endblock %}
-{% else %}
-<center>
-  <h3 class="mt-4">No ha inciado sesion</h3>
-  <a class="btn btn-danger" href="{% url 'login' %}">Inicia Sesion</a>
-</center>
-{% endif %}
