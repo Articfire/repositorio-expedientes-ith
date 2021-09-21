@@ -29,20 +29,19 @@ def ControladorImportarAlumnos(request):
 
             except Exception as e:
                 data['error'] = 'El archivo que intentó subir no es de excel'
-
-            try:
-                for fila in diccionario_alumnos.values():
-                    alumno_nuevo = Alumno(
+            finally:
+                try:
+                    for fila in diccionario_alumnos.values():
+                        alumno_nuevo = Alumno(
                         nombre_completo = str(fila.get('apellido_paterno')) + ' ' + str(fila.get('apellido_materno')) + ' ' + str(fila.get('nombre_aspirante')),
                         numero_control = fila.get('no_control'),
                         carrera = fila.get('carrera')
-                    )
-                    alumno_nuevo.save()
-            except Exception as e:
-                data['error'] = 'Ya hay un numero de control asi ingresado.'
-
+                        )
+                        alumno_nuevo.save()
+                except Exception as e:
+                    data['error'] = 'Error: Se trato de ingresar un numero de control repetido.'
         else:
-            data['error'] = 'No subio ningun archivo, porfavor elija uno y subalo.'
+            data['error'] = 'No se subio ningun archivo, porfavor elija uno y subalo.'
     return render(request, 'importar.html', data)
 
 def ControladorAltaAlumnos(request):
@@ -71,7 +70,6 @@ def ControladorAltaAlumnos(request):
     return render(request, 'alta_usuarios.html', data)
 
 def ControladorConsultaExpedientes(request):
-    data = {}
     return render(request, 'consulta.html')
 
 def ControladorExpediente(request, id):
@@ -143,18 +141,21 @@ def ControladorAjaxConsulta(request, busqueda, filtro):
     return HttpResponse(json.dumps(data, sort_keys=False, indent=4), content_type="application/json")
 
 def ControladorVerPDF(request, archivo_id):
-    archivo = Archivo.objects.get(id=archivo_id)
-    with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
-        response = HttpResponse(pdf.read(), content_type='application/pdf')
-        return response
-    pdf.closed
+    try:
+        archivo = Archivo.objects.get(id=archivo_id)
+        with open('{}/{}.{}'.format(settings.MEDIA_ROOT, archivo.nombre, archivo.extension), 'rb') as pdf:
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            return response
+            pdf.closed
+    except Exception as ex:
+        print(ex)
 
 def ControladorLogin(request):
     if request.method=="POST":
         claveUsr = request.POST.get("txt_clave")
         passwrd = request.POST.get("txt_password")
         user = authenticate(username=claveUsr, password=passwrd)
-        if user is not None:
+        if user:
             login(request, user)
             return redirect('/')
         else:
