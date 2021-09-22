@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, FileResponse
 from django.conf import settings
-# from django.core.files.storage import FileSystemStorage
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 import pandas as pd
 import json
@@ -109,16 +109,18 @@ def ControladorExpediente(request, id):
             archivo_guardado = fs.save(mi_archivo.name, mi_archivo)
 
             # Preparar consulta para insertar a la tabla de archivos.
-            archivo_a_anexar = Archivo(
-                nombre = prefijo + '_' + str(data.get('numero_control')),
-                extension = nombre_y_extension[-1],
-                pertenece_a = Alumno(id)
-            )
-
-            # Si el nombre del archivo a insertar no lo tiene otro archivo en la tabla,
-            # ejecutar consulta para INSERTAR.
-            if not archivo_a_anexar.nombre in [archivo.nombre for archivo in archivos]:
-                archivo_a_anexar.save()
+            nombre = prefijo + '_' + str(data.get('numero_control'))
+            try:
+                archivo_a_anexar = Archivo.objects.get(nombre=nombre)
+                archivo_a_anexar.extension = nombre_y_extension[-1]
+                archivo_a_anexar.pertenece_a = Alumno(id)
+            except Archivo.DoesNotExist:
+                archivo_a_anexar = Archivo(
+                    nombre = nombre,
+                    extension = nombre_y_extension[-1],
+                    pertenece_a = Alumno(id)
+                )
+            archivo_a_anexar.save()
         else:
             data.update({'error' : 'No subio ningun archivo, porfavor elija uno y subalo.'})
     return render(request, 'expediente.html', data)
@@ -140,6 +142,7 @@ def ControladorAjaxConsulta(request, busqueda, filtro):
 
     return HttpResponse(json.dumps(data, sort_keys=False, indent=4), content_type="application/json")
 
+@login_required
 def ControladorVerPDF(request, archivo_id):
     try:
         archivo = Archivo.objects.get(id=archivo_id)
