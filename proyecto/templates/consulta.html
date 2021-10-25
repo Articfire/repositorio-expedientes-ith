@@ -68,10 +68,9 @@
 				$("#btn_buscar").prop("disabled", true);
     	},
 			success: function(data) {
+				// Si la busqueda regresa resultados
 				$("tbody").empty();
-
 				$.each(data, function(index, element) {
-
 					// Este if es para monitorear si viene un numero de control con 0s al inicio
 					// y arreglar eso.
 					longitudNumeroControl = Math.ceil(Math.log10(element.numero_control + 1));
@@ -92,6 +91,11 @@
 					);
 					$("tbody").append($tr);
 				})
+				$("#loaderDiv").hide();
+				$("#btn_buscar").prop("disabled", false);
+			},
+			error: function(data){
+				// Si la busqueda no regresa resultados
 				$("#loaderDiv").hide();
 				$("#btn_buscar").prop("disabled", false);
 			}
