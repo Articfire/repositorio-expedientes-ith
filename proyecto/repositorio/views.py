@@ -127,7 +127,7 @@ def ControladorExpediente(request, id):
                 )
             archivo_a_anexar.save()
         else:
-            data.update({'error' : 'No subio ningun archivo, porfavor elija uno y subalo.'})
+            data.update({'error' : 'Error: No subio ningun archivo, porfavor elija uno y subalo.'})
     return render(request, 'expediente.html', data)
 
 def ControladorAjaxConsulta(request, busqueda, filtro):
