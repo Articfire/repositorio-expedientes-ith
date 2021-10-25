@@ -56,7 +56,8 @@
 {% block script %}
 <script type="text/javascript">
 	$("#searchForm").submit(function() {
-		var busqueda = $("#txt_nombre").val().toUpperCase();
+		// var busqueda = $("#txt_nombre").val().toUpperCase();
+		var busqueda = $("#txt_nombre").val()
 		var filtro = $("#filtro").val();
 
 		$.ajax({
@@ -96,6 +97,7 @@
 			},
 			error: function(data){
 				// Si la busqueda no regresa resultados
+				$("tbody").empty();
 				$("#loaderDiv").hide();
 				$("#btn_buscar").prop("disabled", false);
 			}
