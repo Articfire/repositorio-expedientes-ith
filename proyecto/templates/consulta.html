@@ -69,11 +69,24 @@
     	},
 			success: function(data) {
 				$("tbody").empty();
+
 				$.each(data, function(index, element) {
+
+					// Este if es para monitorear si viene un numero de control con 0s al inicio
+					// y arreglar eso.
+					longitudNumeroControl = Math.ceil(Math.log10(element.numero_control + 1));
+					var ceros = ""
+					if (longitudNumeroControl == 6) {
+						ceros = "00"
+					}
+					if (longitudNumeroControl == 7) {
+						ceros = "0"
+					}
+
 					var $tr = $('<tr>').append(
 						$('<th>').text(element.id),
 						$('<td>').text(element.nombre_completo),
-						$('<td>').text(element.numero_control),
+						$('<td>').text(ceros + element.numero_control),
 						$('<td>').text(element.carrera),
 						$('<td>').html('<a class="btn btn-primary" href="/expediente/'+element.id+'">Ir a expediente</a>'),
 					);

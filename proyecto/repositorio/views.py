@@ -131,21 +131,27 @@ def ControladorExpediente(request, id):
     return render(request, 'expediente.html', data)
 
 def ControladorAjaxConsulta(request, busqueda, filtro):
+    alumnos = None
+
     if filtro == 'nombre':
         alumnos = Alumno.objects.filter(nombre_completo__contains = busqueda)
     elif filtro == 'numero_control':
         alumnos = Alumno.objects.filter(numero_control__contains = busqueda)
+
+    if alumnos:
+        data = [
+            {
+                'id': alumno.id,
+                'nombre_completo': alumno.nombre_completo,
+                'numero_control': alumno.numero_control,
+                'carrera': alumno.carrera,
+            }
+            for alumno in alumnos
+        ]
+
+        return HttpResponse(json.dumps(data, sort_keys=False, indent=4), content_type="application/json")
     else:
-        return HttpResponse('No hay ningun filtro llamado '+str(filtro))
-
-    data = [{
-        'id': alumno.id,
-        'nombre_completo': alumno.nombre_completo,
-        'numero_control': alumno.numero_control,
-        'carrera': alumno.carrera,
-    } for alumno in alumnos]
-
-    return HttpResponse(json.dumps(data, sort_keys=False, indent=4), content_type="application/json")
+        return HttpResponse("Hubo un error, revisa que el filtro y la busqueda sean correctos.")
 
 @login_required
 def ControladorVerPDF(request, archivo_id):
