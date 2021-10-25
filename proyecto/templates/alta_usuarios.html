@@ -9,19 +9,27 @@
   <div class="fondodatos contenedor col-6">
       <center>
         <h3>Registro Manual de Alumnos</h3>
+
         <div class="grupo-input col-4">
-          <label class="" for="txt_nombre">Nombre</label>
+          <label for="txt_nombre">Nombre Completo</label>
           <input class="form-control" type="text" id="txt_nombre" name="txt_nombre" required>
         </div>
-        <br>
+
         <div class="grupo-input col-4">
-          <label class="" for="txt_clave">Numero de Control</label>
-          <input class="form-control" type="number" id="txt_clave" name ="txt_noControl" required>
+          <label for="txt_clave">Numero de Control</label>
+          <input class="form-control" type="number" id="txt_clave" name="txt_noControl" required>
         </div>
+
         <br>
+
         <div class="grupo-input col-4">
-          <label for="prefijo" style="margin-top: 4%;">Carrera</label>
-    		  <select class="form-control" style="width: 100%;" id="prefijo" name="txt_carrera" required>
+          <label for="carrera-personalizada">Carrera Personalizada</label>
+          <input class="form-control" oninput="ControlDeListaDeCarreras();" type="text" name="carrera-personalizada" id="carrera-personalizada">
+        </div>
+
+        <div class="grupo-input col-4" id="grupo-carrera">
+          <label for="prefijo">Carrera</label>
+    		  <select class="form-control" style="width: 100%;" id="prefijo" name="txt_carrera">
             <option value="">-- Elija una opción --</option>
       		  <option value="ING. AERONAUTICA">ING. AERONAUTICA</option>
       		  <option value="ING. BIOMEDICA">ING. BIOMEDICA</option>
@@ -37,18 +45,33 @@
             <option value="ING. INFORMATICA">ING. INFORMATICA</option>
     		  </select>
         </div>
+
         <br>
+
         <div class="grupo-input col-4">
           <input class="btn btn-success" name="btn_registro" type="submit" value="Registro">
         </div>
       </center>
   </div>
 </form>
-  {% if error %}
-  <center>
-    <p>
-      {{ error }}
-    </p>
-  </center>
-  {% endif %}
+{% if error %}
+<center>
+  <p>
+    {{ error }}
+  </p>
+</center>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  function ControlDeListaDeCarreras(){
+    if ($("#carrera-personalizada").val() == '') {
+      $("#grupo-carrera").show()
+    }
+    else {
+      $("#grupo-carrera").hide()
+    }
+  }
+</script>
 {% endblock %}
