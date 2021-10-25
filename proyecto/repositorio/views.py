@@ -101,7 +101,7 @@ def ControladorExpediente(request, id):
             else:
                 prefijo = request.POST.get('prefijo-personalizado')
 
-            # Proceso para cambiarle el nombre al archivo subido
+            # Proceso para cambiarle el nombre al archivo subido a uno mas legible
             mi_archivo = request.FILES.get('archivo')
             ruta = mi_archivo.name.split('/')
             nombre_y_extension = ruta[-1].split('.')
